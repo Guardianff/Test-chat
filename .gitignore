@@ -10,7 +10,8 @@ env/
 .venv/
 
 # Environment files
-.env
+*.env
+secrets/
 .env.local
 .env.*.local
 
