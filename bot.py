@@ -11,8 +11,8 @@ from telegram.ext import (
 
 # Configuration
 import os
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-ADMIN_CHAT_ID = os.getenv("TELEGRAM_ADMIN_ID")    # For receiving reports
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_CHAT_ID = os.getenv("ADMIN_ID")    # For receiving reports
 active_conversations = {}
 message_sender_map = {}  # Stores {(chat_id, message_id): sender_id}
 
