@@ -36,6 +36,56 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=ReplyKeyboardRemove()
     )
 
+
+    # Add this missing function
+async def find_partner(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Match users anonymously"""
+    user_id = update.effective_user.id
+    
+    if user_id in active_conversations:
+        await update.message.reply_text("⚠️ You're already in a conversation!")
+        return
+    
+    # Find available partner
+    for uid in active_conversations:
+        if active_conversations[uid] is None:
+            active_conversations[uid] = user_id
+            active_conversations[user_id] = uid
+            
+            # Notify both users
+            await context.bot.send_message(
+                chat_id=uid,
+                text="🔗 Connected to anonymous partner!\nSend /stop to end chat."
+            )
+            await context.bot.send_message(
+                chat_id=user_id,
+                text="🔗 Connected to anonymous partner!\nSend /stop to end chat."
+            )
+            return
+    
+    # If no partner found
+    active_conversations[user_id] = None
+    await update.message.reply_text("🔎 Searching for partner...")
+
+# Add these other required functions if missing
+async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """End current conversation"""
+    user_id = update.effective_user.id
+    if user_id in active_conversations:
+        partner_id = active_conversations[user_id]
+        del active_conversations[user_id]
+        del active_conversations[partner_id]
+        
+        await context.bot.send_message(
+            chat_id=user_id,
+            text="❌ Conversation ended. Use /chat to start new one."
+        )
+        await context.bot.send_message(
+            chat_id=partner_id,
+            text="❌ Partner ended the conversation. Use /chat to find new one."
+        )
+    return ConversationHandler.END
+
 async def report_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle message reporting"""
     reporter = update.effective_user
