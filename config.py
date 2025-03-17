@@ -1,2 +1,2 @@
-BOT_TOKEN = "your_telegram_bot_token"
-ADMIN_CHAT_ID = "your_admin_id"
+BOT_TOKEN = "7844250012:AAGa81oLVvKUgEb4q1Fx6j-7tOE02OZHW5w"
+ADMIN_CHAT_ID = "7503226921"
